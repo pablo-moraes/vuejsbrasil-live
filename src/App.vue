@@ -1,28 +1,37 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div>
+    <br>
+    <input type="text" v-model="contentFood" @keyup.enter="addFood">
+    <button @click="addFood">
+      Adicionar
+    </button>
+    <food-list @stop="handleStop" :foods="foods"/>
   </div>
 </template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import FoodList from './components/FoodList'
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  components: { FoodList },
+  data: () => ({
+      foods: JSON.parse(localStorage.getItem('foods')) || [],
+      contentFood: ''
+  }),
+  methods:  {
+    handleStop(payload) {
+      console.log(payload);
+      window.alert(payload);
+    },
+    addFood() {
+      this.foods.push(this.contentFood);
+      localStorage.setItem('foods', JSON.stringify(this.foods));
+      this.contentFood = '';
+    }
   }
 }
 </script>
-
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+body {
+  background: #2c3e50;
+  color: white;
 }
 </style>
